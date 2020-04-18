@@ -5,8 +5,9 @@ import (
 	"strconv"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
+	"github.com/c-bata/go-prompt"
 
-	"calc-parser/parser"
+	"calc-parser/listen/parser"
 )
 
 type calcListener struct {
@@ -66,9 +67,13 @@ func (l *calcListener) ExitNumber(c *parser.NumberContext) {
 	l.push(i)
 }
 
+func (l *calcListener) ExitParenthesis(c *parser.ParenthesisContext) {
+	fmt.Println("exit parenthesis :", l.stack)
+}
+
 func calc(input string) int {
 	// 初始化输入
-	is := antlr.NewInputStream("1 + 2 * 3")
+	is := antlr.NewInputStream(input)
 
 	// 创建词法分析器
 	lexer := parser.NewCalcLexer(is)
@@ -85,8 +90,21 @@ func calc(input string) int {
 	return listener.pop()
 }
 
-func main() {
-	result := calc("1 + 2 * 3")
+func executor(in string) {
+	fmt.Printf("Answer: %d\n", calc(in))
+}
 
-	fmt.Println("caculate result : ", result)
+func completer(in prompt.Document) []prompt.Suggest {
+	var ret []prompt.Suggest
+	return ret
+}
+
+func main() {
+	p := prompt.New(
+		executor,
+		completer,
+		prompt.OptionPrefix(">>> "),
+		prompt.OptionTitle("calc"),
+	)
+	p.Run()
 }

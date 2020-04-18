@@ -15,4 +15,5 @@ expression
   : expression op=('*'|'/') expression # ManulDiv
   | expression op=('+'|'-') expression # AddSub
   | NUMBER                             # Number
+  | '(' expression ')'                 # Parenthesis
   ;
