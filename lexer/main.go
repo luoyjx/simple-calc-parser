@@ -79,7 +79,8 @@ func (s *SimpleLexer) tokenize(script string) SimpleTokenReader {
 			} else {
 				state = s.initToken(ch)
 			}
-		case DfaStateGE, DfaStateAssignment, DfaStatePlus, DfaStateMinus, DfaStateStar, DfaStateSlash, DfaStateSemiColon, DfaStateLeftParen, DfaStateRightParen:
+		case DfaStateGE, DfaStateAssignment, DfaStatePlus, DfaStateMinus, DfaStateStar,
+			DfaStateSlash, DfaStateSemiColon, DfaStateLeftParen, DfaStateRightParen:
 			state = s.initToken(ch)
 		case DfaStateIntLiteral:
 			if isDigit(ch) {
