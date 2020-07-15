@@ -54,7 +54,7 @@ type SimpleLexer struct {
 	TokenText []rune        // 未解析完的 Token 的临时文本
 }
 
-func (s *SimpleLexer) tokenize(script string) {
+func (s *SimpleLexer) tokenize(script string) SimpleTokenReader {
 	s.Tokens = make([]SimpleToken, 0)
 	s.Token = SimpleToken{}
 
@@ -121,6 +121,11 @@ func (s *SimpleLexer) tokenize(script string) {
 	if len(s.TokenText) > 0 {
 		s.initToken(rune(-1))
 	}
+
+	return SimpleTokenReader{
+		Tokens:   s.Tokens,
+		Position: 0,
+	}
 }
 
 func (s *SimpleLexer) initToken(ch rune) DfaState {
@@ -139,6 +144,7 @@ func (s *SimpleLexer) initToken(ch rune) DfaState {
 			s.TokenText = append(s.TokenText, ch)
 		} else {
 			newState = DfaStateID // 进入 ID 状态
+			s.TokenText = append(s.TokenText, ch)
 		}
 	} else if isDigit(ch) { // 第一个字符是数字
 		newState = DfaStateIntLiteral
@@ -175,11 +181,30 @@ func (s *SimpleLexer) initToken(ch rune) DfaState {
 		newState = DfaStateRightParen
 		s.Token.Type = TokenTypeRightParen
 		s.TokenText = append(s.TokenText, ch)
+	} else if ch == '=' {
+		newState = DfaStateAssignment
+		s.Token.Type = TokenTypeAssignment
+		s.TokenText = append(s.TokenText, ch)
 	} else {
 		newState = DfaStateInitial
 	}
 
 	return newState
+}
+
+type SimpleTokenReader struct {
+	Tokens   []SimpleToken
+	Position int
+}
+
+func (r *SimpleTokenReader) read() *SimpleToken {
+	if len(r.Tokens) > r.Position {
+		token := r.Tokens[r.Position]
+		r.Position++
+		return &token
+	}
+
+	return nil
 }
 
 func isAlpha(ch rune) bool {
@@ -194,9 +219,28 @@ func isBlank(ch rune) bool {
 	return ch == ' ' || ch == '\t' || ch == '\n'
 }
 
+func dump(reader SimpleTokenReader) {
+	for {
+		token := reader.read()
+
+		if token == nil {
+			break
+		}
+
+		fmt.Println(token.Text, "\t\t", token.Type)
+	}
+	fmt.Println("===========> Reading Tokens done\n ")
+}
+
 func main() {
 	lexer := SimpleLexer{}
 
-	lexer.tokenize("int age = 45;")
-	fmt.Println(lexer)
+	reader := lexer.tokenize("int age = 45;")
+	dump(reader)
+
+	reader = lexer.tokenize("age >= 45")
+	dump(reader)
+
+	reader = lexer.tokenize("2+3*5")
+	dump(reader)
 }
