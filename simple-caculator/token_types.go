@@ -1,4 +1,4 @@
-package simplecaculator
+package simplecalculator
 
 type DfaState = int
 type TokenType = int

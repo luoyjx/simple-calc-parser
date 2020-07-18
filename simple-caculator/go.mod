@@ -1,4 +1,4 @@
-module simplecaculator
+module simplecalculator
 
 go 1.13
 

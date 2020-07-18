@@ -1,4 +1,4 @@
-package simplecaculator
+package simplecalculator
 
 type TokenReader interface {
 	read() Token

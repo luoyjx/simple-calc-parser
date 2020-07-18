@@ -1,4 +1,4 @@
-package simplecaculator
+package simplecalculator
 
 type SimpleLexer struct {
 	Tokens    []SimpleToken // 解析完成的 Token

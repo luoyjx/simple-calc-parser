@@ -1,4 +1,4 @@
-package simplecaculator
+package simplecalculator
 
 type Token interface {
 	getType() TokenType
