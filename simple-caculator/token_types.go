@@ -1,7 +1,7 @@
 package simplecalculator
 
-type DfaState = int
-type TokenType = int
+type DfaState int
+type TokenType int
 
 const (
 	DfaStateInitial DfaState = iota
