@@ -9,7 +9,7 @@ import (
 func TestLexer(t *testing.T) {
 	lexer := SimpleLexer{}
 
-	Convey("should tokenize int decrlaration ok", t, func() {
+	Convey("should tokenize int declaration ok", t, func() {
 		reader := lexer.tokenize("int age = 45;")
 
 		token := reader.read()
@@ -49,7 +49,7 @@ func TestLexer(t *testing.T) {
 		So(token.Text, ShouldEqual, "45")
 	})
 
-	Convey("should tokenize caculate expression ok", t, func() {
+	Convey("should tokenize calculate expression ok", t, func() {
 		reader := lexer.tokenize("2+3*5")
 
 		token := reader.read()

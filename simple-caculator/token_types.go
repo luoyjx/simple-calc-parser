@@ -36,4 +36,5 @@ const (
 	TokenTypeRightParen
 	TokenTypeAssignment
 	TokenTypeInt
+	TokenTypeMultiplicative
 )

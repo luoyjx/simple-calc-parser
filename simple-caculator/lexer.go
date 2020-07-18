@@ -1,15 +1,5 @@
 package simplecaculator
 
-import (
-	"fmt"
-	"unicode"
-)
-
-type SimpleToken struct {
-	Type TokenType
-	Text string
-}
-
 type SimpleLexer struct {
 	Tokens    []SimpleToken // 解析完成的 Token
 	Token     SimpleToken   // 当前正在解析的 Token
@@ -104,11 +94,11 @@ func (s *SimpleLexer) initToken(ch rune) DfaState {
 	if isAlpha(ch) {
 		if ch == 'i' {
 			newState = DfaStateID_Int1
-			s.TokenText = append(s.TokenText, ch)
 		} else {
 			newState = DfaStateID // 进入 ID 状态
-			s.TokenText = append(s.TokenText, ch)
 		}
+		s.TokenText = append(s.TokenText, ch)
+		s.Token.Type = TokenTypeIdentifier
 	} else if isDigit(ch) { // 第一个字符是数字
 		newState = DfaStateIntLiteral
 		s.Token.Type = TokenTypeIntLiteral
@@ -153,44 +143,4 @@ func (s *SimpleLexer) initToken(ch rune) DfaState {
 	}
 
 	return newState
-}
-
-type SimpleTokenReader struct {
-	Tokens   []SimpleToken
-	Position int
-}
-
-func (r *SimpleTokenReader) read() *SimpleToken {
-	if len(r.Tokens) > r.Position {
-		token := r.Tokens[r.Position]
-		r.Position++
-		return &token
-	}
-
-	return nil
-}
-
-func isAlpha(ch rune) bool {
-	return unicode.IsLetter(ch)
-}
-
-func isDigit(ch rune) bool {
-	return unicode.IsDigit(ch)
-}
-
-func isBlank(ch rune) bool {
-	return ch == ' ' || ch == '\t' || ch == '\n'
-}
-
-func Dump(reader SimpleTokenReader) {
-	for {
-		token := reader.read()
-
-		if token == nil {
-			break
-		}
-
-		fmt.Println(token.Text, "\t\t", token.Type)
-	}
-	fmt.Println("===========> Reading Tokens done\n ")
 }
