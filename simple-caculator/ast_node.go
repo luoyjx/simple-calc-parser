@@ -7,11 +7,10 @@ type ASTNodeType = int
 const (
 	ASTNodeTypeIntDeclaration ASTNodeType = iota // 整型变量声明
 	ASTNodeTypeProgram
-	ASTNodeTypeAdditive  // 加法表达式
+	ASTNodeTypeAdditive       // 加法表达式
 	ASTNodeTypeMultiplicative // 乘法表达式
-	ASTNodeTypeIntLiteral // 整型字面量
-	ASTNodeTypeIdentifier // 标识符
-
+	ASTNodeTypeIntLiteral     // 整型字面量
+	ASTNodeTypeIdentifier     // 标识符
 
 )
 

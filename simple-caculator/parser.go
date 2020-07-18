@@ -60,15 +60,15 @@ func (c *SimpleCalculator) evaluate(node *SimpleASTNode, indent string) int {
 	switch node.GetType() {
 	case ASTNodeTypeProgram:
 		for _, child := range node.Children {
-			result = c.evaluate(child, indent + "\t")
+			result = c.evaluate(child, indent+"\t")
 		}
 
 	case ASTNodeTypeAdditive:
 		child1 := node.Children[0]
-		value1 := c.evaluate(child1, indent + "\t")
+		value1 := c.evaluate(child1, indent+"\t")
 
 		child2 := node.Children[1]
-		value2 := c.evaluate(child2, indent + "\t")
+		value2 := c.evaluate(child2, indent+"\t")
 
 		if node.GetText() == "+" {
 			result = value1 + value2
@@ -78,10 +78,10 @@ func (c *SimpleCalculator) evaluate(node *SimpleASTNode, indent string) int {
 
 	case ASTNodeTypeMultiplicative:
 		child1 := node.Children[0]
-		value1 := c.evaluate(child1, indent + "\t")
+		value1 := c.evaluate(child1, indent+"\t")
 
 		child2 := node.Children[1]
-		value2 := c.evaluate(child2, indent + "\t")
+		value2 := c.evaluate(child2, indent+"\t")
 
 		if node.GetText() == "*" {
 			result = value1 * value2
@@ -113,7 +113,7 @@ func (c *SimpleCalculator) additive(tokens *SimpleTokenReader) (node *SimpleASTN
 		for {
 			token := tokens.peek()
 
-			if token != nil && (token.getType() == TokenTypePlus  || token.getType() == TokenTypeMinus) {
+			if token != nil && (token.getType() == TokenTypePlus || token.getType() == TokenTypeMinus) {
 				token = tokens.read()
 
 				child2, err := c.multiplicative(tokens)
