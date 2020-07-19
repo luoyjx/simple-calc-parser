@@ -7,35 +7,30 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 )
 
-func TestParser(t *testing.T) {
-	parser := SimpleCalculator{}
+func TestParse(t *testing.T) {
+	parser := SimpleParser{}
 
-	Convey("should parse int declaration ok", t, func() {
-		code := "int a = b+3;"
-		fmt.Println("解析变量声明语句： ", code)
-
-		lexer := SimpleLexer{}
-		tokens := lexer.tokenize(code)
-
-		node, err := parser.IntDeclare(&tokens)
-
+	Convey("should parse int declaration expression ok ", t, func() {
+		script := "int age = 45+2; age= 20; age+10*2;"
+		fmt.Println("解析：", script)
+		tree, err := parser.Parse(script)
 		So(err, ShouldBeNil)
-		So(node, ShouldNotBeNil)
-
-		DumpAST(node, "")
+		DumpAST(tree, "")
 	})
 
-	Convey("should evaluate script ok", t, func() {
-		code := "2+3*5"
-		fmt.Println("\n计算：", code, ",看上去一切正常")
-		parser.Evaluate(code)
+	Convey("should parse invalid additive script fail", t, func() {
+		script := "2+3+;"
+		fmt.Println("解析：", script)
+		_, err := parser.Parse(script)
+		fmt.Println(err.Error())
+		So(err, ShouldNotBeNil)
+	})
 
-		code = "2+"
-		fmt.Println("\n计算：", code, ",应该有语法错误。")
-		parser.Evaluate(code)
-
-		code = "2+3+4"
-		fmt.Println("\n计算：", code, ", 结合性出现错误。")
-		parser.Evaluate(code)
+	Convey("should parse invalid multiplicative script fail", t, func() {
+		script := "2+3*;"
+		fmt.Println("解析：", script)
+		_, err := parser.Parse(script)
+		fmt.Println(err.Error())
+		So(err, ShouldNotBeNil)
 	})
 }

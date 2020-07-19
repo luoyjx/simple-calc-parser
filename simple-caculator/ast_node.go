@@ -13,6 +13,7 @@ const (
 	ASTNodeTypeMultiplicative // 乘法表达式
 	ASTNodeTypeIntLiteral     // 整型字面量
 	ASTNodeTypeIdentifier     // 标识符
+	ASTNodeTypeAssignmentStmt // 赋值
 
 )
 
@@ -30,6 +31,8 @@ func (t ASTNodeType) String() string {
 		return "IntLiteral"
 	case ASTNodeTypeIdentifier:
 		return "Identifier"
+	case ASTNodeTypeAssignmentStmt:
+		return "AssignmentStmt"
 	default:
 		return fmt.Sprintf("%d", int(t))
 	}
@@ -42,6 +45,7 @@ var ASTNodeTypeStr = []string{
 	"Multiplicative",
 	"IntLiteral",
 	"Identifier",
+	"AssignmentStmt",
 }
 
 type ASTNode interface {
