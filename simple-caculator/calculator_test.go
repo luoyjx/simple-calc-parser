@@ -26,7 +26,7 @@ func TestCalculator(t *testing.T) {
 	})
 
 	Convey("should evaluate script ok", t, func() {
-		code := "2+3*5"
+		code := "2+3*5+4"
 		fmt.Println("\n计算：", code, ",看上去一切正常")
 		parser.Evaluate(code)
 
